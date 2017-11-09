@@ -1,3 +1,4 @@
 .ipynb_checkpoints/
 # emacs backups
 *~
+__pycache__/
