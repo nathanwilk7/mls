@@ -30,7 +30,7 @@ def get_teams_season_past_matches(filepath, team, season, date):
     if num_matches > 0:
         avg_home_team_matches = sum_home_team_matches / num_matches
     else:
-        avg_home_team_matches_home = sum_home_team_matches
+        avg_home_team_matches = sum_home_team_matches
         
     #away_team_matches = matches[matches.away_team_name == team]
     seasons_matches = team_matches[team_matches.season_id == season]
