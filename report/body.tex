@@ -1,6 +1,9 @@
 \section{Introduction} 
 
-\section {Background and Setting}
+\section {Related Work and Background}
+Sports betting is a common activity among avid sports fans in all sports, including soccer, basketball, football, baseball, and many other sports. To facilitate betting, many organizations publish public betting lines that describes which team is favored to win a game, and how much they are favored to win a game. However, many, or perhaps even most, of these models are strictly statistical and probabilistic. We seek to apply machine learning. Our goal is to focus on soccer, particularly in the United States, and to explore how different algorithms may produce better results, and if different train/test splits on data have an impact on learning results (e.g. explore if it is more useful to split data randomly or linearly within the course of a single season).
+
+We have explored several different studies of machine learning with sports betting. These studies explore data from NCAA (college) basketball in the United States \cite{zimmermann2013predicting}, NFL (professional) football in the United States \cite{warner2010predicting}, and EPL (professional) soccer in England \cite{constantinou2012pi}. These reports have utilized Bayesian methods \cite{constantinou2012pi, zimmermann2013predicting}, decision trees and random forests \cite{zimmermann2013predicting}, and Gaussian processes \cite{warner2010predicting}. An important common aspect of all of these studies is that they recognize that using simple, raw statistics is not nearly as useful in machine learning algorithms. That is, they recognize the need for alternative features to help represent matches. This includes factors like home field advantage, winning- and losing-streaks, and player injuries. We will continue to explore these conclusions as we seek to form our feature representations and identify our desired algorithms.
 
 \section {Description of Data}
 
@@ -13,3 +16,4 @@
 \section{Conclusion}
 
 \section*{Acknowledgements}
+This report was completed for the course project in CS 5350: Machine Learning at the University of Utah in the Fall 2017 semester. We would like to acknowledge the help of Prof. Vivek Srikumar who taught us the principles and tools necessary to complete this project. Much of the implementation of different algorithms for this project was completed as part of assignments throughout the semester, and was modified to fit our needs for this project.
