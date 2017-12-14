@@ -13,8 +13,10 @@ class Bayes:
         self.zero_given_neg_one = []
 
     def predict(self, x, j):
+        pdb.set_trace()
         prob_one, prob_neg_one = log(self.ones / self.total), log(self.neg_ones / self.total)
         for i in range(x[j].size):
+            
             if x[j,i] == 1:
                 prob_one += log(self.one_given_one[i])
                 prob_neg_one += log(self.one_given_neg_one[i])

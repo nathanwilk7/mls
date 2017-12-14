@@ -25,7 +25,7 @@ def get_xy(data, is_svmlight=False, y_col=None, features_to_drop=[]):
     y = y.astype(int)
     y = y.replace(to_replace=0, value=-1)
     y = np.reshape(y, (len(y), 1))
-    data.drop(y_col, axis=1)
+    data = data.drop(y_col, axis=1)
     return data, y
 
 def add_any_missing_features_cols(data, num_features):
