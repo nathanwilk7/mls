@@ -557,7 +557,6 @@ def hw5_wrapper(alg_label):
                 mistakes += 1
         return (correct / float(correct + mistakes)) * 100
 
-    pdb.set_trace()
     svm_info_home['win_tie_loss_accuracy'] = win_tie_loss_pct(svm_info_home['w'], svm_info_away['w'], test_x, home_test_y, away_test_y)
     svm_info_away['win_tie_loss_accuracy'] = svm_info_home['win_tie_loss_accuracy']
 

@@ -469,7 +469,6 @@ def hw5_wrapper(alg_label):
             w = np.random.rand(num_features + 1, 1) * initial_weight_range - (initial_weight_range / 2.0)
             for epoch in range(epochs):
                 correct, mistakes = 0, 0
-                pdb.set_trace()
                 for x, y, eval_x, eval_y in cross_val(folds, cv_filepath, num_features=num_features, is_svmlight=False, y_col=y_col, features_to_drop=features_to_drop):
                     #x, y = permute_examples(x, y)
                     w = svm(x, y, w, rate=learning_rate, regularization=svm_regularization)
