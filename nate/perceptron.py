@@ -8,7 +8,7 @@ from perceptron_alg import perceptron
 
 epochs = 10
 folds = 5
-cv_filepath = 'data/past_matches_results_train_cv_{cv}.csv' #'Dataset/CVSplits/training0{cv}.data'
+cv_filepath = 'data/mls_16_train_cv_{cv}.csv' #'Dataset/CVSplits/training0{cv}.data'
 initial_weight_range=0.02
 #features_to_drop = ['away_result', 'score_home', 'score_away', 'outcome', 'home_team_name', 'away_team_name', 'competition_id', 'season_id']
 features_to_drop = ['away_result', 'score_home', 'score_away', 'outcome', 'home_team_name', 'away_team_name', 'competition_id', 'season_id', 'home_half_score_home', 'home_half_score_away', 'away_half_score_home', 'away_half_score_away']
@@ -429,8 +429,8 @@ y_col = 'home_result'
 num_features = 392
 learning_rates = [1, 0.1, 0.01]
 margins = [1, 0.1, 0.01]
-dev_filepath = 'data/past_matches_results_train.csv'
-test_filepath = 'data/past_matches_results_test.csv'
+dev_filepath = 'data/mls_16_train.csv'
+test_filepath = 'data/mls_16_test.csv'
 dev_epochs = 20
 np.random.seed(7)
 
