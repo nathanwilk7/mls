@@ -14,9 +14,9 @@ numFeatures = 0
 
 # Set the data set directory path
 dataSetPath = '.'
-trainSetName = '/data/speeches.train.liblinear'
-testSetName = '/data/speeches.test.liblinear'
-validateSetPattern = '/data/CVSplits/training0%d.data'
+trainSetName = '/data/train.csv.home.data'
+testSetName = '/data/test.csv.home.data'
+validateSetPattern = '/data/train%d.csv.home.data'
 
 # The following are global dictionaries used to store the data from various sets (test, train, dev, cross-validate)
 trainLabelsDictionary = {}
@@ -210,7 +210,7 @@ def parseLines(trainLines):
         if(dataParts[0] == '1'):
             label = 1
         if(len(dataParts) > 1):
-            featureVector = {int(attribute.strip().split(':')[0]): int(attribute.strip().split(':')[1]) for attribute in dataParts[1:]}
+            featureVector = {int(attribute.strip().split(':')[0]): float(attribute.strip().split(':')[1]) for attribute in dataParts[1:]}
         else:
             featureVector = {}
         featureVector[0] = 1
@@ -243,10 +243,10 @@ def logisticRegression(labelSet, featureSet, numEpochs, learnRate, tradeoff, gra
         for i in range(0,dataSetSize):
             attributeVector = getDenseVector(featureSet[shuffleOrder[i]])
             predictionValue = np.dot(weightVector,attributeVector)
-            actualValue = labelSet[shuffleOrder[i]]
-            dynLearnRate = learnRate/(1+t)
-            if(actualValue*predictionValue < 0):
-                weightVector = numpy.multiply((1-(2*dynLearnRate/tradeoff)),weightVector) + numpy.multiply((dynLearnRate*actualValue*(1/(1+math.exp(actualValue*predictionValue)))), attributeVector)
+            actualValue = float(labelSet[shuffleOrder[i]])
+            dynLearnRate = float(learnRate/(1+t))
+            if(actualValue*predictionValue < 0.0):
+                weightVector = numpy.multiply((1.0-(2.0*dynLearnRate/tradeoff)),weightVector) + numpy.multiply((dynLearnRate*actualValue*(1.0/(1.0+math.exp(actualValue*predictionValue)))), attributeVector)
                 numUpdates += 1
             t += 1
         accuracy = evaluatePerformance(weightVector, trainLabelsDictionary, trainFeaturesDictionary)
@@ -283,10 +283,10 @@ def cross_logisticRegression(labelSet, featureSet, numEpochs, learnRate, tradeof
         for i in range(0,dataSetSize):
             attributeVector = getDenseVector(featureSet[shuffleOrder[i]])
             predictionValue = np.dot(weightVector,attributeVector)
-            actualValue = labelSet[shuffleOrder[i]]
-            dynLearnRate = learnRate/(1+t)
-            if(actualValue*predictionValue < 0):
-                weightVector = numpy.multiply((1-(2*dynLearnRate/tradeoff)),weightVector) + numpy.multiply((dynLearnRate*actualValue*(1/(1+math.exp(actualValue*predictionValue)))), attributeVector)
+            actualValue = float(labelSet[shuffleOrder[i]])
+            dynLearnRate = float(learnRate/(1+t))
+            if(actualValue*predictionValue < 0.0):
+                weightVector = numpy.multiply((1.0-(2.0*dynLearnRate/tradeoff)),weightVector) + numpy.multiply((dynLearnRate*actualValue*(1.0/(1.0+math.exp(actualValue*predictionValue)))), attributeVector)
             t += 1
     return weightVector
 

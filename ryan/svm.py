@@ -27,8 +27,8 @@ testLabelsDictionary = {}
 testFeaturesDictionary = {}
 
 # The following is a list of hyper-parameters that will be used to represent both learning rate and regularization
-learningRateHyperParams=[10, 1, 0.1, 0.01, 0.001, 0.0001]
-regularizationHyperParams=[10, 1, 0.1, 0.01, 0.001, 0.0001]
+learningRateHyperParams=[10.0, 1.0, 0.1, 0.01, 0.001, 0.0001]
+regularizationHyperParams=[10.0, 1.0, 0.1, 0.01, 0.001, 0.0001]
 
 # This function is the orchestrator to call and collect results from svm.
 def main(path):
@@ -243,12 +243,12 @@ def svm(labelSet, featureSet, numEpochs, learnRate, regularization, graph):
         for i in range(0,dataSetSize):
             attributeVector = getDenseVector(featureSet[shuffleOrder[i]])
             predictionValue = np.dot(weightVector,attributeVector)
-            actualValue = labelSet[shuffleOrder[i]]
-            dynLearnRate = learnRate/(1+t)
+            actualValue = float(labelSet[shuffleOrder[i]])
+            dynLearnRate = float(learnRate/(1.0+float(t)))
             if(actualValue*predictionValue <= 1):
-                weightVector = numpy.multiply((1-dynLearnRate), weightVector) + numpy.multiply((dynLearnRate*regularization*actualValue),attributeVector)
+                weightVector = numpy.multiply((1.0-dynLearnRate), weightVector) + numpy.multiply((dynLearnRate*regularization*actualValue),attributeVector)
             else:
-                weightVector = numpy.multiply((1-dynLearnRate), weightVector)
+                weightVector = numpy.multiply((1.0-dynLearnRate), weightVector)
             numUpdates += 1
             t += 1
         accuracy = evaluatePerformance(weightVector, trainLabelsDictionary, trainFeaturesDictionary)
@@ -285,12 +285,12 @@ def cross_svm(labelSet, featureSet, numEpochs, learnRate, regularization):
         for i in range(0,dataSetSize):
             attributeVector = getDenseVector(featureSet[shuffleOrder[i]])
             predictionValue = np.dot(weightVector,attributeVector)
-            actualValue = labelSet[shuffleOrder[i]]
-            dynLearnRate = learnRate/(1+t)
+            actualValue = float(labelSet[shuffleOrder[i]])
+            dynLearnRate = float(learnRate/(1.0+float(t)))
             if(actualValue*predictionValue <= 1):
-                weightVector = numpy.multiply((1-dynLearnRate), weightVector) + numpy.multiply((dynLearnRate*regularization*actualValue),attributeVector)
+                weightVector = numpy.multiply((1.0-dynLearnRate), weightVector) + numpy.multiply((dynLearnRate*regularization*actualValue),attributeVector)
             else:
-                weightVector = numpy.multiply((1-dynLearnRate), weightVector)
+                weightVector = numpy.multiply((1.0-dynLearnRate), weightVector)
             t += 1
     return weightVector
 
