@@ -14,9 +14,9 @@ numFeatures = 0
 
 # Set the data set directory path
 dataSetPath = '.'
-trainSetName = '/data/speeches.train.liblinear'
-testSetName = '/data/speeches.test.liblinear'
-validateSetPattern = '/data/CVSplits/training0%d.data'
+trainSetName = '/data/train.csv.home.data'
+testSetName = '/data/test.csv.home.data'
+validateSetPattern = '/data/train%d.csv.home.data'
 
 # The following are global dictionaries used to store the data from various sets (test, train, dev, cross-validate)
 trainLabelsDictionary = {}

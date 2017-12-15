@@ -33,6 +33,7 @@ def main(path):
 
     trainLabelsDictionary, trainFeaturesDictionary = readTrainFile()
     testLabelsDictionary, testFeaturesDictionary = readTestFile()
+    print(testLabelsDictionary)
 
     features = []
     for featureVector in trainFeaturesDictionary.values():
@@ -50,9 +51,9 @@ def main(path):
 
     features = [x for x in range(1,numFeatures+1)]
     trees = []
-    for i in range(0,10):
-        initialDataSet = np.random.choice(len(trainLabelsDictionary), 100, replace=True)
-        tree = id3Algorithm(initialDataSet, features, None, 0, 10)
+    for i in range(0,100):
+        initialDataSet = np.random.choice(len(trainLabelsDictionary), len(trainLabelsDictionary), replace=True)
+        tree = id3Algorithm(initialDataSet, features, None, 0, 3)
         trees.append(tree)
         print('Tree number %d completed' % (i+1))
 
@@ -131,7 +132,7 @@ def parseLines(trainLines):
         if(dataParts[0] == '1'):
             label = 1
         if(len(dataParts) > 1):
-            featureVector = {int(attribute.strip().split(':')[0]): float(attribute.strip().split(':')[1]) for attribute in dataParts[1:]}
+            featureVector = {int(attribute.strip().split(':')[0]): int(attribute.strip().split(':')[1]) for attribute in dataParts[1:]}
         else:
             featureVector = {}
         labelsDictionary[dataIndex] = label

@@ -6,7 +6,7 @@ The methods utilized in this project explore a variety of algorithms, such as su
 
 \begin{enumerate}
 \item Feature selection and the relevance of data is extremely important and can significantly impact machine learning model performance.
-\item The selections of concept class and hypothesis space are important aspects machine learning pursuits and can heavily impact the performance of a model. That is, the bias introduced by the best hypothesis in the space can be a significant limiting factor and must be monitored and controlled carefully.
+\item The selections of concept class and hypothesis space are important aspects of machine learning pursuits and can heavily impact the performance of a model. That is, the bias introduced by the best hypothesis in the space can be a significant limiting factor and must be monitored and controlled carefully.
 \end{enumerate}
 
 \section {Related Work and Background}
@@ -21,9 +21,9 @@ The data used in this experiment was scraped from the web from the Audi soccer d
 Once the data was in feature vectors as a CSV file, more high-level feature extraction was performed. We extracted summary statistics for each game that averaged each team's statistics over the past games from each season. Then, we generated statistics that summarized a team's performance during the season like total wins, ties, and losses and average points per game. In soccer, a win is worth 3 points, a tie is worth 1 point, and a loss is worth 0 points. We also added some columns that could be used for the output of the prediction like "did the home team get a result (win or tie) or not?" and "was the outcome a win, tie, or loss for the home team"? 
 
 \subsection{Feature Extraction}
-We separated the features into home and away because we suspected that home-field advantage would play a large role in determining who won games. We also subdivided the data into files by season and league, for example, Major League Soccer for 2016 or English Premier League for 2017. In total, there were 3312 games and X (403?) features from which the train and test sets could be made. However, we explored fitting models to different subsets of the data such as games from a specific year or leagues.
+We separated the features into home and away because we suspected that home-field advantage would play a large role in determining who won games. We also subdivided the data into files by season and league, for example, Major League Soccer for 2016 or English Premier League for 2016. In total, there were ~3300 games and ~400 features from which the train and test sets could be made. However, we explored fitting models to different subsets of the data such as games from a specific year or leagues.
 
-Using a Chi-Squared test, we were able to identify the following features as significantly different (p < 0.01) between instances where a home team got a result and did not:
+Examples of the features included the number of completed passes in the forward third of the field, the number of failed passes in the back third of the field, the number of yellow and red cards, the average number of points per game, and the number of previous wins, ties, and losses. These features were all real-valued features. Using a Chi-Squared test, we were able to identify the following features as significantly different (p < 0.01) between instances where a home team got a result and did not:
 
 \begin{itemize}
 \item Number of ties for the home team so far this season
@@ -34,14 +34,20 @@ Using a Chi-Squared test, we were able to identify the following features as sig
 \item Average number of headers won
 \end{itemize}
 
+We also generated a set of ~100 binary features that were characterized by comparisons between teams. For example, one feature represented if the home team has a higher average of points per game than the visiting team. Another feature represented if the home team had more shots on goal than the visiting team. These features were especially relevant for using Naive Bayes and Decision Tree models.
 
-\section{Methods}
-We used the Python programming language for our machine learning algorithms and for our feature extraction code. The algorithms we used for this project included Support Vector Machines, Logistic Regression, Perceptron, etc. We performed a grid search using 5-fold cross validation to tune hyperparameters for each algorithm. We then evaluated the performance of algorithm on a test set. 
+\begin{figure*}[t]
+\includegraphics[width=12cm]{epoch.png}
+\caption{Individual Epoch Accuracy}
+\label{figure1}
+\end{figure*}
 
-We used various data sets to examine the effects of each. The MLS '16 dataset consists of the Major League Soccer games from the year 2016. This dataset was split into a training set that consisted of games from the first 90\% of the season, and a test set that consisted of games from the past 10\% of the season. The EPL '16 dataset consists of English Premier League matches from the year 2016. This dataset was also split into the first 90\% of games as training data and the last 10\% of games as test. The Random dataset consists of all the examples from every league and year. The Random dataset is split randomly between train and test sets, there is not consideration of time in the split.
+\section{Methods and Implementation}
+Our implementation was designed with the goal of predicting whether or not the home team would get a result from the game. In soccer, a team gets a result if they win or tie their opponent. We chose to predict whether or not the home team got a result because it allowed us to simplify the problem to binary classification. In addition, if we could accurately predict whether or not the home team gets a result, it would be trivial to extend the classifier to predict whether the away team gets a result. This in turn would allow us to predict the outcome of a game explicitly as a home win, tie, or home loss.
 
-Our code was run with the goal of predicting whether or not the home team would get a result from the game. In soccer, a team gets a result if they win or tie their opponent. We chose to predict whether or not the home team got a result because it allowed us to simplify the problem to binary classification. In addition, if we could accurately predict whether or not the home team gets a result, it would be trivial to extend the classifier to predict whether the away team gets a result. This in turn would allow us to predict the outcome of a game explicitly as a home win, tie, or home loss.
+We used the Python programming language for our machine learning algorithms and for our feature extraction code. In an effort to explore the various tools and methodologies, we use various algorithms. The algorithms we used for this project included Support Vector Machines, Logistic Regression, variants of the Perceptron, Decision Trees, and Naive Bayes. We performed a grid search using 5-fold cross validation to tune hyper-parameters for each algorithm, such as learning rate and regularization terms. We then evaluated the performance of algorithm on a test set using the best set of hyper-parameters. For those models which train over epochs, the weights from the most successful epoch were used to evaluate against the test set.
 
+We used various data sets to examine the results of each group. The MLS '16 dataset consists of the Major League Soccer games from the year 2016. This dataset was split into a training set that consisted of games from the first 90\% of the season, and a test set that consisted of games from the past 10\% of the season. The EPL '16 dataset consists of English Premier League matches from the year 2016. This dataset was also split into the first 90\% of games as training data and the last 10\% of games as test. The Random dataset consists of all the examples from every league and year. The Random dataset is split randomly between train and test sets, such that there is not consideration of time in the split. The impact of chronologically versus randomly split data is addressed in the evaluation. We also explore the impact of using the raw statistical features as opposed to the derived binary features.
 
 \section{Evaluations}
 
@@ -77,7 +83,7 @@ Our code was run with the goal of predicting whether or not the home team would 
         Averaged Perceptron & $r=0.01$ & 66.30\% & 83.33\%\\\hline
         \end{tabular}
         \caption{EPL '16 Results}
-        \label{table1a}
+        \label{table1b}
         \end{subtable}
         
         \begin{subtable}[h]{0.96\textwidth}
@@ -93,12 +99,20 @@ Our code was run with the goal of predicting whether or not the home team would 
         Averaged Perceptron & $r=0.01$ &  62.32\% & 75.30\%\\\hline
         \end{tabular}
         \caption{All Results}
-        \label{table1a}
+        \label{table1c}
         \end{subtable}
         
         \caption{Evaluation Results}
         \label{table1}
 \end{table*}
+
+\subsection{Raw Features}
+The results for running the algorithms on the various data sets using the raw statistical features are shown in Table \ref{table1}. The results for the MLS '16 data set, EPL '16 data set, and comprehensive data set are shown in Tables \ref{table1a} - \ref{table1c}, respectively. It is interesting to note, that the results largely show that each of the algorithms learns to simply predict that the home team gets a result. The majority label for each of the three data sets is that the home team gets a result, with percentages 81.08\%, 83.33\%, and 75.30\%, respectively. These curious results seemed to initially indicate errors in the implementation, such that the algorithms are simply guessing the majority label. However, for the SVM, logistic regression, and Perceptron variants, each algorithm is implemented twice, once by each author independently. The results are confirmed by running each set of algorithms against these data sets. Furthermore, the algorithms were run using other unrelated data sets, and non-trivial results are obtained. That is, the algorithms do not simply predict the majority label for other data sets in the same format. Nevertheless, we also rigorously inspected the code for errors, but found none. Thus, the results seem to indicate that the data and features have a significant impact on the performance of the algorithms. In addition, the results seem to show that the hypothesis spaces associated with our chosen algorithms are not expressive enough to manage the ``intangible'' elements of soccer and other sports.
+
+Another interesting result which further shows the dependence on the data are the results of weights produced by individual epochs. Figure \ref{figure1} shows the accuracy of individual epochs for each algorithm over the MLS '16 data set. Rather than following a generally increasing path, the accuracy of successive epochs varies wildly, depending on the shuffling of data to start each epoch. This further indicates the importance of the impact of data on the results of the algorithms. 
+
+\subsection{Derived Features}
+Using the derived set of binary features over the whole data set, and training with the Naive Bayes and decision tree models, the algorithms output results similar to those above, achieving the test accuracy of 75.30\%. This continues to hold for using ensemble methods combining bagged forests with SVM and logistic regression. While we hoped that the derived features may be more expressive than the raw statistics, as noted in related work, the results don't appear promising. Unfortunately the results again indicate the data, features, and hypothesis spaces we are using are not expressive enough to capture the results of soccer matches.
 
 \section{Future Work}
 Because the classifiers trained on our data achieved their best performance by always predicting the home team would win, this suggests several possibilities that could influence future work. We would like to answer the question of whether or not being the home team really dominates all other aspects of the team?s performance. If we found that the statistics we used to train our models did have predictive power regarding who will win the match, then we would investigate why our models were not able to effectively use these features. It is possible that the linear models we used had too much bias and not enough variance to capture the non-linear relationships in the data. However, as a preliminary test, we used non-linear classifiers from the sklearn library and they also ended up predicting the home team would win every time.

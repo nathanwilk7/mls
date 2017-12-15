@@ -14,8 +14,11 @@ for file in files:
             if parts[len(parts)-1].strip() == "False":
                 away_result = 0
             features = ""
-            for index in range(0,len(parts)-2):
-                features += " " + str(index+1) + ":" + str(parts[index])
+            for index in range(0,100):
+                result = 1
+                if parts[index] < parts[index+100]:
+                    result = 0
+                features += " " + str(index+1) + ":" + str(result)
             h.write(str(home_result) + features + "\n")
             w.write(str(away_result) + features + "\n")
                 
