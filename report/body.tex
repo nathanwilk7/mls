@@ -4,8 +4,10 @@ Sports betting is a common activity among sports enthusiasts around the world. I
 
 The methods utilized in this project explore a variety of algorithms, such as support vector machines (SVM), logistic regression, bagged forests, and perceptron. A large portion of this work is exploration with features, such as comparing raw statistics against derived features. We also explore the divisions of training and test data, such as comparisons between chronologically split data and randomly split data. The main lessons we learned from this project are the following:
 
-Feature selection and the relevance of data is extremely important and can significantly impact machine learning model performance.
-The selections of concept class and hypothesis space are important aspects machine learning pursuits and can heavily impact the performance of a model. That is, the bias introduced by the best hypothesis in the space can be a significant limiting factor and must be monitored and controlled carefully.
+\begin{enumerate}
+\item Feature selection and the relevance of data is extremely important and can significantly impact machine learning model performance.
+\item The selections of concept class and hypothesis space are important aspects machine learning pursuits and can heavily impact the performance of a model. That is, the bias introduced by the best hypothesis in the space can be a significant limiting factor and must be monitored and controlled carefully.
+\end{enumerate}
 
 \section {Related Work and Background}
 Sports betting is a common activity among avid sports fans in all sports, including soccer, basketball, football, baseball, and many other sports. To facilitate betting, many organizations publish public betting lines that describes which team is favored to win a game, and how much they are favored to win a game. However, many, or perhaps even most, of these models are strictly statistical and probabilistic. We seek to apply machine learning. Our goal is to focus on soccer, particularly in the United States, and to explore how different algorithms may produce better results, and if different train/test splits on data have an impact on learning results (e.g. explore if it is more useful to split data randomly or linearly within the course of a single season).
@@ -18,13 +20,90 @@ The data used in this experiment was scraped from the web from the Audi soccer d
 
 Once the data was in feature vectors as a CSV file, more high-level feature extraction was performed. We extracted summary statistics for each game that averaged each team's statistics over the past games from each season. Then, we generated statistics that summarized a team's performance during the season like total wins, ties, and losses and average points per game. In soccer, a win is worth 3 points, a tie is worth 1 point, and a loss is worth 0 points. We also added some columns that could be used for the output of the prediction like "did the home team get a result (win or tie) or not?" and "was the outcome a win, tie, or loss for the home team"? 
 
-We seperated the features into home and away because we suspected that home-field advantage would play a large role in determining who won games. We also subdivided the data into files by season and league, for example, Major League Soccer for 2016 or English Premier League for 2017. In total, there were 3312 games and X (403?) features from which the train and test sets could be made. However, we explored fitting models to different subsets of the data such as games from a specific year or leagues.
+\subsection{Feature Extraction}
+We separated the features into home and away because we suspected that home-field advantage would play a large role in determining who won games. We also subdivided the data into files by season and league, for example, Major League Soccer for 2016 or English Premier League for 2017. In total, there were 3312 games and X (403?) features from which the train and test sets could be made. However, we explored fitting models to different subsets of the data such as games from a specific year or leagues.
+
+Using a Chi-Squared test, we were able to identify the following features as significantly different (p < 0.01) between instances where a home team got a result and did not:
+
+\begin{itemize}
+\item Number of ties for the home team so far this season
+\item Average passes in the defensive zone
+\item Average number of passes in the forward zone
+\item Average number of long passes from the defensive zone into the offensive zone 
+\item Average accurate crosses
+\item Average number of headers won
+\end{itemize}
+
 
 \section{Methods}
+We used the Python programming language for our machine learning algorithms and for our feature extraction code. The algorithms we used for this project included Support Vector Machines, Logistic Regression, Perceptron, etc. We performed a grid search using 5-fold cross validation to tune hyperparameters for each algorithm. We then evaluated the performance of algorithm on a test set. 
+
+We used various data sets to examine the effects of each. The MLS '16 dataset consists of the Major League Soccer games from the year 2016. This dataset was split into a training set that consisted of games from the first 90\% of the season, and a test set that consisted of games from the past 10\% of the season. The EPL '16 dataset consists of English Premier League matches from the year 2016. This dataset was also split into the first 90\% of games as training data and the last 10\% of games as test. The Random dataset consists of all the examples from every league and year. The Random dataset is split randomly between train and test sets, there is not consideration of time in the split.
+
+Our code was run with the goal of predicting whether or not the home team would get a result from the game. In soccer, a team gets a result if they win or tie their opponent. We chose to predict whether or not the home team got a result because it allowed us to simplify the problem to binary classification. In addition, if we could accurately predict whether or not the home team gets a result, it would be trivial to extend the classifier to predict whether the away team gets a result. This in turn would allow us to predict the outcome of a game explicitly as a home win, tie, or home loss.
+
 
 \section{Evaluations}
 
+\begin{table*}[t]
+	\centering
+        
+        \begin{subtable}[h]{0.96\textwidth}
+        \centering
+        \begin{tabular}[h]{|>{\centering}m{4.5cm}>{\centering}m{4cm}>{\centering}m{2.5cm}c|}
+        \hline
+        Algorithm & Best Hyper-Parameters & Train Accuracy      & Test Accuracy\\ \hline \hline
+        SVM & $r=10$, $C=10$ & 81.61\% & 81.08\%\\
+        Logistic Regression & $r=1$, $C=1$ & 81.61\% & 81.08\%\\
+        Perceptron & $r=0.01$ & 81.61\% & 81.08\%\\
+        Dynamic Perceptron & $r=0.01$ & 81.61\% & 81.08\%\\ 
+        Margin Perceptron & $r=0.01$, $\gamma=0.01$ & 81.61\% & 81.08\%\\ 
+        Averaged Perceptron & $r=0.01$ & 68.06\% & 81.08\%\\\hline
+        \end{tabular}
+        \caption{MLS '16 Results}
+        \label{table1a}
+        \end{subtable}
+        
+        \begin{subtable}[h]{0.96\textwidth}
+        \centering
+        \begin{tabular}[h]{|>{\centering}m{4.5cm}>{\centering}m{4cm}>{\centering}m{2.5cm}c|}
+        \hline
+        Algorithm & Best Hyper-Parameters & Train Accuracy      & Test Accuracy\\ \hline \hline
+        SVM & $r=10$, $C=0.01$ & 75.93\% & 83.33\%\\
+        Logistic Regression & $r=1$, $C=100$ & 75.93\% & 83.33\%\\
+        Perceptron & $r=0.01$ & 75.93\% & 83.33\%\\
+        Dynamic Perceptron & $r=0.01$ & 67.77\% & 83.33\%\\ 
+        Margin Perceptron & $r=0.01$, $\gamma=0.01$ & 75.93\% & 83.33\%\\ 
+        Averaged Perceptron & $r=0.01$ & 66.30\% & 83.33\%\\\hline
+        \end{tabular}
+        \caption{EPL '16 Results}
+        \label{table1a}
+        \end{subtable}
+        
+        \begin{subtable}[h]{0.96\textwidth}
+        \centering
+        \begin{tabular}[h]{|>{\centering}m{4.5cm}>{\centering}m{4cm}>{\centering}m{2.5cm}c|}
+        \hline
+        Algorithm & Best Hyper-Parameters & Train Accuracy      & Test Accuracy \\ \hline \hline
+        SVM & $r=1$, $C=10$ & 72.25\% & 75.30\%\\
+        Logistic Regression & $r=1$, $C=1000$ &  72.25\% & 75.30\%\\
+        Perceptron & $r=0.01$ &  72.25\% & 75.30\%\\
+        Dynamic Perceptron & $r=0.01$ &  62.32\% & 75.30\%\\ 
+        Margin Perceptron & $r=0.01$, $\gamma=0.01$ &  72.25\% & 75.30\%\\ 
+        Averaged Perceptron & $r=0.01$ &  62.32\% & 75.30\%\\\hline
+        \end{tabular}
+        \caption{All Results}
+        \label{table1a}
+        \end{subtable}
+        
+        \caption{Evaluation Results}
+        \label{table1}
+\end{table*}
+
 \section{Future Work}
+Because the classifiers trained on our data achieved their best performance by always predicting the home team would win, this suggests several possibilities that could influence future work. We would like to answer the question of whether or not being the home team really dominates all other aspects of the team?s performance. If we found that the statistics we used to train our models did have predictive power regarding who will win the match, then we would investigate why our models were not able to effectively use these features. It is possible that the linear models we used had too much bias and not enough variance to capture the non-linear relationships in the data. However, as a preliminary test, we used non-linear classifiers from the sklearn library and they also ended up predicting the home team would win every time.
+
+There are many features we were unable to capture in our data like recent performance by each team, time since last match, injuries, trades, etc. It would be interesting to see if adding these features allows the model more predictive power. In addition, other high-level statistics could be found like goals per minute or considering performance against specific teams. It would be helpful to have more data as that could allow us to better overcome the natural noise and variance within sports. In addition, it would be a good idea to do more error checking on the data that was scraped and transformed into feature vectors to make sure there weren?t mistakes in the process.
 
 \section{Conclusion}
 
