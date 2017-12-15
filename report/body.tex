@@ -7,6 +7,12 @@ We have explored several different studies of machine learning with sports betti
 
 \section {Description of Data}
 
+The data used in this experiment was scraped from the web from the URL,\\audi-player-index.com/en/getMatch/<id>/latest/.\\The data from each match is identified by a unique id specified in the url. The data was compiled by the company Opta, which gathers detailed statistics on sports matches. After being scraped from the web, an SQLite database was used to aggregate and consolidate the data to allow it to be transformed into per-match feature vectors.
+
+Once the data was in feature vectors as a CSV file, more high-level feature extraction was performed. We extracted summary statistics for each game that averaged each team's statistics over the past games from each season. Then, we generated statistics that summarized a team's performance during the season like total wins, ties, and losses and average points per game. In soccer, a win is worth 3 points, a tie is worth 1 point, and a loss is worth 0 points. We also added some columns that could be used for the output of the prediction like "did the home team get a result (win or tie) or not?" and "was the outcome a win, tie, or loss for the home team"? 
+
+We seperated the features into home and away because we suspected that home-field advantage would play a large role in determining who won games. We also subdivided the data into files by season and league, for example, Major League Soccer for 2016 or English Premier League for 2017. In total, there were 3312 games and X (403?) features from which the train and test sets could be made. However, we explored fitting models to different subsets of the data such as games from a specific year or leagues.
+
 \section{Methods}
 
 \section{Evaluations}
