@@ -26,12 +26,13 @@ We separated the features into home and away because we suspected that home-fiel
 Examples of the features included the number of completed passes in the forward third of the field, the number of failed passes in the back third of the field, the number of yellow and red cards, the average number of points per game, and the number of previous wins, ties, and losses. These features were all real-valued features. Using a Chi-Squared test, we were able to identify the following features as significantly different (p < 0.01) between instances where a home team got a result and did not:
 
 \begin{itemize}
-\item Number of ties for the home team so far this season
-\item Average passes in the defensive zone
-\item Average number of passes in the forward zone
-\item Average number of long passes from the defensive zone into the offensive zone 
-\item Average accurate crosses
-\item Average number of headers won
+\item Number of wins so far this season, p=1.67e-7
+\item Number of ties so far this season, p=0.00321
+\item Number of losses so far this season, p=0.000267
+\item Average passes in the defensive zone, p=3.52e-10
+\item Average number of passes in the forward zone, p=1.19e-6
+\item Average number of long passes from the defensive zone into the offensive zone, p=2.11e-5
+\item Average accurate crosses, p=0.00658
 \end{itemize}
 
 We also generated a set of ~100 binary features that were characterized by comparisons between teams. For example, one feature represented if the home team has a higher average of points per game than the visiting team. Another feature represented if the home team had more shots on goal than the visiting team. These features were especially relevant for using Naive Bayes and Decision Tree models.
@@ -115,7 +116,7 @@ Another interesting result which further shows the dependence on the data are th
 Using the derived set of binary features over the whole data set, and training with the Naive Bayes and decision tree models, the algorithms output results similar to those above, achieving the test accuracy of 75.30\%. This continues to hold for using ensemble methods combining bagged forests with SVM and logistic regression. While we hoped that the derived features may be more expressive than the raw statistics, as noted in related work, the results don't appear promising. Unfortunately the results again indicate the data, features, and hypothesis spaces we are using are not expressive enough to capture the results of soccer matches.
 
 \section{Future Work}
-Because the classifiers trained on our data achieved their best performance by always predicting the home team would win, this suggests several possibilities that could influence future work. We would like to answer the question of whether or not being the home team really dominates all other aspects of the team?s performance. If we found that the statistics we used to train our models did have predictive power regarding who will win the match, then we would investigate why our models were not able to effectively use these features. It is possible that the linear models we used had too much bias and not enough variance to capture the non-linear relationships in the data. However, as a preliminary test, we used non-linear classifiers from the sklearn library and they also ended up predicting the home team would win every time.
+Because the classifiers trained on our data achieved their best performance by always predicting the home team would win, this suggests several possibilities that could influence future work. We would like to answer the question of whether or not being the home team really dominates all other aspects of the team's performance. If we found that the statistics we used to train our models did have predictive power regarding who will win the match, then we would investigate why our models were not able to effectively use these features. It is possible that the linear models we used had too much bias and not enough variance to capture the non-linear relationships in the data. However, it would be expected that the ensemble methods would have been able to capture these non-linear relationships.
 
 There are many features we were unable to capture in our data like recent performance by each team, time since last match, injuries, trades, etc. It would be interesting to see if adding these features allows the model more predictive power. In addition, other high-level statistics could be found like goals per minute or considering performance against specific teams. It would be helpful to have more data as that could allow us to better overcome the natural noise and variance within sports. In addition, it would be a good idea to do more error checking on the data that was scraped and transformed into feature vectors to make sure there weren?t mistakes in the process.
 
